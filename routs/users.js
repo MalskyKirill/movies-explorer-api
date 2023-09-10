@@ -15,3 +15,5 @@ router.patch(
   }),
   updateUserProfile,
 ); // обновить информацию о пользователе
+
+module.exports = router;
