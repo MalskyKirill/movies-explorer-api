@@ -19,7 +19,7 @@ router.post(
       trailerLink: Joi.string().required().regex(regExpUrl),
       thumbnail: Joi.string().required().regex(regExpUrl),
       owner: Joi.string().required(),
-      movieId: Joi.string().required(),
+      movieId: Joi.number().required(),
       nameRU: Joi.string().required(),
       nameEN: Joi.string().required(),
     }),
