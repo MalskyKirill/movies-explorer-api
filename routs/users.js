@@ -1,9 +1,11 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 
-const { getCurrentUser, updateUserProfile } = require('../controllers');
+const { getCurrentUser, updateUserProfile, createUser } = require('../controllers/users');
 
 router.get('/me', getCurrentUser); // получить информацию о пользователе
+
+router.post('/', createUser); // создать пользователя
 
 router.patch(
   '/me',
