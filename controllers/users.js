@@ -2,6 +2,7 @@ const UserModel = require('../models/user');
 const NotFoundError = require('../utils/errors/NotFoundError');
 const ValidationError = require('../utils/errors/ValidationError');
 const ConflictError = require('../utils/errors/ConflictError');
+const { OK_CREATE_CODE } = require('../utils/constStatusCode');
 
 const getCurrentUser = (req, res, next) => {
   const { _id } = req.user;
@@ -19,11 +20,11 @@ const getCurrentUser = (req, res, next) => {
 const updateUserProfile = (req, res, next) => {
   const { _id } = req.user;
 
-  const { name, about } = req.body;
+  const { email, password, name } = req.body;
 
   UserModel.findByIdAndUpdate(
     _id,
-    { name, about },
+    { email, password, name },
     { new: true, runValidators: true },
   )
     .orFail(() => {
@@ -45,8 +46,6 @@ const updateUserProfile = (req, res, next) => {
 const createUser = (req, res, next) => {
   const { email, password, name } = req.body;
 
-  console.log(email, password, name)
-
   if (!email || !password || !name) {
     throw new ValidationError(
       'Email и пароль и имя пользователя не могут быть пустыми',
@@ -59,7 +58,7 @@ const createUser = (req, res, next) => {
     name,
   }).then((user) => {
     res
-      .status(201)
+      .status(OK_CREATE_CODE)
       .send({
         _id: user._id,
         password: user.password,
