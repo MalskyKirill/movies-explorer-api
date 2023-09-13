@@ -64,7 +64,7 @@ const deleteMovie = (req, res, next) => {
       throw new NotFoundError('Фильм с указанным id не найдена');
     })
     .then((movie) => {
-      if (movie.owner !== req.user._id) {
+      if (`${movie.owner}` !== req.user._id) {
         throw new ForbiddenError(
           'Нельзя удалять фильм добавленный другим пользователем',
         );
@@ -72,7 +72,7 @@ const deleteMovie = (req, res, next) => {
 
       MovieModel.deleteOne(movie)
         .then(() => {
-          res.send({ message: 'Фильм добавлен' });
+          res.send({ message: 'Фильм удален' });
         })
         .catch(next);
     })
