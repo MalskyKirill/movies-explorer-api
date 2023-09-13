@@ -18,14 +18,6 @@ const { PORT = 3000 } = process.env;
 
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '6500543029775ccf13fa1335', // вставьте сюда _id созданного в предыдущем пункте пользователя
-  };
-
-  next();
-});
-
 app.use(router);
 
 app.use(handleError);
