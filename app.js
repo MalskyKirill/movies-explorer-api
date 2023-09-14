@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const router = require('./routs/index');
 const handleError = require('./midlewares/handleError');
@@ -18,6 +19,15 @@ mongoose
 const app = express();
 
 const { PORT = 3000 } = process.env;
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use(limiter); // применили промежуточное ПО для ограничения скорости ко всем запросам
 
 app.use(helmet());
 
