@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
+const cors = require('cors');
 const router = require('./routs/index');
 const { requestLogger, errorLogger } = require('./midlewares/logger');
 
@@ -20,6 +21,8 @@ mongoose
   });
 
 const app = express();
+
+app.use(cors()); // подключаем корс
 
 const { PORT = 3000 } = process.env;
 
