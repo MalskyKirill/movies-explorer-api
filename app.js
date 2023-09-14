@@ -7,13 +7,14 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
 const router = require('./routs/index');
+const { requestLogger, errorLogger } = require('./midlewares/logger');
 
 const handleError = require('./midlewares/handleError');
 
 // подключение к бд
 mongoose
-  .connect('mongodb://localhost:27017/moviesdb')
-  // .connect('mongodb://127.0.0.1:27017/moviesdb')
+  // .connect('mongodb://localhost:27017/moviesdb')
+  .connect('mongodb://127.0.0.1:27017/bitfilmsdb')
   .then(() => {
     console.log('подключение к базе данных проекта movies');
   });
@@ -35,7 +36,11 @@ app.use(helmet()); // промежуточное ПО для защиты заг
 
 app.use(bodyParser.json()); // подключили бодипарсер
 
-app.use(router);
+app.use(requestLogger); // подключаем логгер запросов
+
+app.use(router); // подключаем роуты
+
+app.use(errorLogger); // подключаем логгер ошибок
 
 // обработчик ошибок celebrate
 app.use(errors());
