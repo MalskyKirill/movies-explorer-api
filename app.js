@@ -5,7 +5,9 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
+const { errors } = require('celebrate');
 const router = require('./routs/index');
+
 const handleError = require('./midlewares/handleError');
 
 // подключение к бд
@@ -27,14 +29,18 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
-app.use(limiter); // применили промежуточное ПО для ограничения скорости ко всем запросам
+app.use(limiter); // промежуточное ПО для ограничения скорости ко всем запросам
 
-app.use(helmet());
+app.use(helmet()); // промежуточное ПО для защиты заголовков
 
-app.use(bodyParser.json());
+app.use(bodyParser.json()); // подключили бодипарсер
 
 app.use(router);
 
+// обработчик ошибок celebrate
+app.use(errors());
+
+// мидлварина для обработки ошибок
 app.use(handleError);
 
 // начинаем прослушивать подключение на PORT
