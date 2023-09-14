@@ -8,6 +8,8 @@ const ConflictError = require('../utils/errors/ConflictError');
 const UnauthorizedError = require('../utils/errors/UnauthorizedError');
 const { OK_CREATE_CODE } = require('../utils/constStatusCode');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 const SALT_ROUNDS = 10;
 
 const getCurrentUser = (req, res, next) => {
@@ -106,7 +108,7 @@ const loginUser = (req, res, next) => {
           next(new UnauthorizedError('Пароль не верный'));
           return;
         }
-        const token = jwt.sign({ _id: user._id }, 'some-secret-key', {
+        const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key', {
           expiresIn: '7d',
         });
         res.send({ token });
