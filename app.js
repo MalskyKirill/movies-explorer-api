@@ -3,10 +3,10 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
 const cors = require('cors');
+const limiter = require('./midlewares/limiter');
 const router = require('./routs/index');
 const { requestLogger, errorLogger } = require('./midlewares/logger');
 
@@ -22,13 +22,6 @@ mongoose.connect(DATABASE_URL).then(() => {
 const app = express();
 
 app.use(cors()); // подключаем корс
-
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
-});
 
 app.use(limiter); // промежуточное ПО для ограничения скорости ко всем запросам
 
