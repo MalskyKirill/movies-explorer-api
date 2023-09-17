@@ -47,6 +47,11 @@ const updateUserProfile = (req, res, next) => {
         return;
       }
 
+      if (err.code === 11000) {
+        next(new ConflictError('Пользователь с таким email уже существует'));
+        return;
+      }
+
       next(err);
     });
 };
