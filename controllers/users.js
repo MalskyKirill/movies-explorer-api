@@ -28,11 +28,11 @@ const getCurrentUser = (req, res, next) => {
 const updateUserProfile = (req, res, next) => {
   const { _id } = req.user;
 
-  const { email, password, name } = req.body;
+  const { email, name } = req.body;
 
   UserModel.findByIdAndUpdate(
     _id,
-    { email, password, name },
+    { email, name },
     { new: true, runValidators: true },
   )
     .orFail(() => {
