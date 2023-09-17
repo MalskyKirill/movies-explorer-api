@@ -12,19 +12,16 @@ const { requestLogger, errorLogger } = require('./midlewares/logger');
 
 const handleError = require('./midlewares/handleError');
 
+const { PORT, DATABASE_URL } = require('./utils/config');
+
 // подключение к бд
-mongoose
-  // .connect('mongodb://localhost:27017/moviesdb')
-  .connect('mongodb://127.0.0.1:27017/bitfilmsdb')
-  .then(() => {
-    console.log('подключение к базе данных проекта movies');
-  });
+mongoose.connect(DATABASE_URL).then(() => {
+  console.log('подключение к базе данных проекта movies');
+});
 
 const app = express();
 
 app.use(cors()); // подключаем корс
-
-const { PORT = 3000 } = process.env;
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
